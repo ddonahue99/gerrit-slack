@@ -70,7 +70,7 @@ class Update
   end
 
   def author
-    "@#{json['author']['username']}"
+    json['author']['username']
   end
 
   def approvals
