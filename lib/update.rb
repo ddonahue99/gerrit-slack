@@ -1,5 +1,6 @@
-
 class Update
+  include Alias
+
   attr_reader :raw_json, :json
 
   def initialize(raw_json)
@@ -50,7 +51,7 @@ class Update
   end
 
   def commit
-    "#{commit_without_owner} (by @#{owner})"
+    "#{commit_without_owner} (by @#{slack_name_for owner})"
   end
 
   def commit_without_owner
