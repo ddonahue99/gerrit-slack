@@ -26,14 +26,14 @@ Set the SSH command used to monitor stream-events on gerrit.
 This is where the real fun happens. The structure is as follows:
 
     channel1:
-      projects:
+      project:
         - project1*
 
     channel2:
-      projects:
+      project:
         - project2*
         - project3
-      owners:
+      owner:
         - owner1
         - owner2
         - owner3
