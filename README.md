@@ -43,7 +43,7 @@ This configuration would post **all** updates from project1 to channel1, likewis
 ## Running the daemon
 
     bundle install
-    ruby app.rb
+    bin/gerrit-slack
 
 ## Running tests
 
