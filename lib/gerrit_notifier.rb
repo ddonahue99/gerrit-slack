@@ -10,9 +10,19 @@ class GerritNotifier
 
   def self.notify(update, msg)
     update.channels(@@channel_config).each do |channel|
-      @@buffer[channel] ||= []
-      @@buffer[channel] << msg
+      channel = "##{channel}"
+      add_to_buffer channel, msg
     end
+  end
+
+  def self.notify_user(user, msg)
+    channel = "@#{user}"
+    add_to_buffer channel, msg
+  end
+
+  def self.add_to_buffer(channel, msg)
+    @@buffer[channel] ||= []
+    @@buffer[channel] << msg
   end
 
   def self.start_buffer_daemon
@@ -33,9 +43,10 @@ class GerritNotifier
           @@buffer.each do |channel, messages|
             notifier = Slack::Notifier.new slack_config['team'], slack_config['token']
             notifier.ping(messages.join("\n\n"),
-              channel: "##{channel}",
+              channel: channel,
               username: 'gerrit',
-              icon_emoji: ':dragon_face:'
+              icon_emoji: ':dragon_face:',
+              link_names: 1
             )
           end
         end
@@ -63,8 +74,12 @@ class GerritNotifier
       end
 
       # Jenkins update
-      if update.jenkins? && update.build_successful? && !update.wip?
-        notify update, "#{update.commit} *passed* Jenkins and is ready for *code review*"
+      if update.jenkins?
+        if update.build_successful? && !update.wip?
+          notify update, "#{update.commit} *passed* Jenkins and is ready for *code review*"
+        elsif update.build_failed?
+          notify_user update.owner, "#{update.commit_without_owner} *failed* on Jenkins"
+        end
       end
 
       # Code review +2

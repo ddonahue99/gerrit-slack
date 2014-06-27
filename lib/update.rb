@@ -1,4 +1,3 @@
-require 'json'
 
 class Update
   attr_reader :raw_json, :json
@@ -51,7 +50,11 @@ class Update
   end
 
   def commit
-    "<#{json['change']['url']}|[#{json['change']['project']}] #{subject}> (by #{owner})"
+    "#{commit_without_owner} (by @#{owner})"
+  end
+
+  def commit_without_owner
+    "<#{json['change']['url']}|[#{json['change']['project']}] #{subject}>"
   end
 
   def owner
@@ -67,7 +70,7 @@ class Update
   end
 
   def author
-    json['author']['username']
+    "@#{json['author']['username']}"
   end
 
   def approvals
