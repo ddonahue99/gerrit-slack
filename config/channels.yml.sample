@@ -1,0 +1,12 @@
+channel-name:
+  project:
+    - project-all-alerts*
+    - project-alerts-dependent-on-owner
+  owner:
+    - owner-1
+    - owner-2
+    - owner-3
+
+channel-2-name:
+  project:
+    - project2*

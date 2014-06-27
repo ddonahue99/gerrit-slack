@@ -1,0 +1,2 @@
+gerrit:
+  stream: ssh -p 29418 gerrit.domain.com gerrit stream-events

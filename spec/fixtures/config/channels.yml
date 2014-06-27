@@ -1,0 +1,8 @@
+hbo:
+  project:
+    - game-of-thrones*
+canvas:
+  project:
+    - canvas-lms
+  owner:
+    - panda
