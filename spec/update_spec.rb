@@ -44,7 +44,7 @@ describe 'Update' do
       expect(update.code_review_rejected?).to be_true
     end
 
-    it "is false when not Code-Review -1 or 2" do
+    it "is false when not Code-Review -1 or -2" do
       json = File.read('spec/fixtures/code-review-approved.json')
       update = Update.new(json)
       expect(update.code_review_rejected?).to be_false
@@ -58,7 +58,7 @@ describe 'Update' do
       expect(update.merged?).to be_true
     end
 
-    it "is false when a reviewer was not added" do
+    it "is false when type is not change-merged" do
       json = File.read('spec/fixtures/comment-added.json')
       update = Update.new(json)
       expect(update.merged?).to be_false
