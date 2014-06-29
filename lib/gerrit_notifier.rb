@@ -118,5 +118,9 @@ class GerritNotifier
         notify update, "#{update.commit} was merged! \\o/ :yuss: :dancing_cool:"
       end
     end
+
+    puts "Connection to Gerrit server failed, trying to reconnect."
+    sleep 3
+    listen_for_updates
   end
 end
