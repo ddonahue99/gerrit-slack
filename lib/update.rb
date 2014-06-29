@@ -112,10 +112,9 @@ class Update
   end
 
   def channels(config)
-    config.map do |channel, opts|
-      channel if \
-        opts['project'].include?("#{project}*") ||
-        (opts['project'].include?(project) && opts['owner'].include?(owner))
-    end.reject(&:nil?)
+    config.select { |channel, opts|
+      opts['project'].include?("#{project}*") ||
+      (opts['project'].include?(project) && opts['owner'].include?(owner))
+    }.keys
   end
 end

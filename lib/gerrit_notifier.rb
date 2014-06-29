@@ -10,8 +10,8 @@ class GerritNotifier
     listen_for_updates
   end
 
-  def self.notify(update, msg)
-    update.channels(@@channel_config).each do |channel|
+  def self.notify(channels, msg)
+    channels.each do |channel|
       channel = "##{channel}"
       add_to_buffer channel, msg
     end
@@ -55,7 +55,7 @@ class GerritNotifier
 
         @@buffer = {}
 
-        sleep 15   # could up this to every minute or two instead
+        sleep 15
       end
     end
   end
@@ -63,64 +63,68 @@ class GerritNotifier
   def self.listen_for_updates
     stream = YAML.load(File.read('config/gerrit.yml'))['gerrit']['stream']
     puts "Listening to stream via #{stream}"
-    
+
     IO.popen(stream).each do |line|
       update = Update.new(line)
-
-      ap update.json
-      puts update.raw_json
-
-      if update.channels(@@channel_config).size == 0
-        puts "No subscribers, skipping."
-        next
-      end
-
-      # Jenkins update
-      if update.jenkins?
-        if update.build_successful? && !update.wip?
-          notify update, "#{update.commit} *passed* Jenkins and is ready for *code review*"
-        elsif update.build_failed?
-          notify_user update.owner, "#{update.commit_without_owner} *failed* on Jenkins"
-        end
-      end
-
-      # Code review +2
-      if update.code_review_approved?
-        notify update, "#{update.author} has *+2'd* #{update.commit}: ready for *QA*"
-      end
-
-      # Code review +1
-      if update.code_review_tentatively_approved?
-        notify update, "#{update.author} has *+1'd* #{update.commit}: needs another set of eyes for *code review*"
-      end
-
-      # QA/Product
-      if update.qa_approved? && update.product_approved?
-        notify update, "#{update.author} has *QA/Product-approved* #{update.commit}! :mj: :victory:"
-      elsif update.qa_approved?
-        notify update, "#{update.author} has *QA-approved* #{update.commit}! :mj:"
-      elsif update.product_approved?
-        notify update, "#{update.author} has *Product-approved* #{update.commit}! :victory:"
-      end
-
-      # Rejected by any reviewer
-      if update.code_review_rejected? || update.qa_rejected? || update.product_rejected?
-        notify update, "#{update.author} has *rejected* #{update.commit}"
-      end
-
-      # New comment added
-      if update.comment_added? && update.human? && update.comment != ''
-        notify update, "#{update.author} has left comments on #{update.commit}: \"#{update.comment}\""
-      end
-
-      # Merged
-      if update.merged?
-        notify update, "#{update.commit} was merged! \\o/ :yuss: :dancing_cool:"
-      end
+      process_update(update)
     end
 
     puts "Connection to Gerrit server failed, trying to reconnect."
     sleep 3
     listen_for_updates
+  end
+
+  def self.process_update(update)
+    ap update.json
+    puts update.raw_json
+
+    channels = update.channels(@@channel_config)
+    if channels.size == 0
+      puts "No subscribers, skipping."
+      return
+    end
+
+    # Jenkins update
+    if update.jenkins?
+      if update.build_successful? && !update.wip?
+        notify channels, "#{update.commit} *passed* Jenkins and is ready for *code review*"
+      elsif update.build_failed?
+        notify_user update.owner, "#{update.commit_without_owner} *failed* on Jenkins"
+      end
+    end
+
+    # Code review +2
+    if update.code_review_approved?
+      notify channels, "#{update.author} has *+2'd* #{update.commit}: ready for *QA*"
+    end
+
+    # Code review +1
+    if update.code_review_tentatively_approved?
+      notify channels, "#{update.author} has *+1'd* #{update.commit}: needs another set of eyes for *code review*"
+    end
+
+    # QA/Product
+    if update.qa_approved? && update.product_approved?
+      notify channels, "#{update.author} has *QA/Product-approved* #{update.commit}! :mj: :victory:"
+    elsif update.qa_approved?
+      notify channels, "#{update.author} has *QA-approved* #{update.commit}! :mj:"
+    elsif update.product_approved?
+      notify channels, "#{update.author} has *Product-approved* #{update.commit}! :victory:"
+    end
+
+    # Rejected by any reviewer
+    if update.code_review_rejected? || update.qa_rejected? || update.product_rejected?
+      notify channels, "#{update.author} has *rejected* #{update.commit}"
+    end
+
+    # New comment added
+    if update.comment_added? && update.human? && update.comment != ''
+      notify channels, "#{update.author} has left comments on #{update.commit}: \"#{update.comment}\""
+    end
+
+    # Merged
+    if update.merged?
+      notify channels, "#{update.commit} was merged! \\o/ :yuss: :dancing_cool:"
+    end
   end
 end
