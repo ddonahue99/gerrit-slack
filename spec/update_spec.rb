@@ -69,6 +69,20 @@ describe 'Update' do
     end
   end
 
+  describe "build_aborted?" do
+    it "is true when comment contains ABORTED" do
+      json = File.read('spec/fixtures/jenkins-aborted.json')
+      update = Update.new(json)
+      expect(update.build_aborted?).to be_true
+    end
+
+    it "is false when not aborted" do
+      json = File.read('spec/fixtures/comment-added.json')
+      update = Update.new(json)
+      expect(update.build_aborted?).to be_false      
+    end
+  end
+
   describe "comment" do
     it "returns only the portion of the comment that the user typed" do
       json = File.read('spec/fixtures/comment-added.json')

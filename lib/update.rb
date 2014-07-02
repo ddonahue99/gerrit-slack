@@ -40,6 +40,10 @@ class Update
     comment =~ /Build Failed/
   end
 
+  def build_aborted?
+    comment =~ /ABORTED/
+  end
+
   def comment
     frd_lines = []
     json['comment'].split("\n\n").each { |line|
@@ -89,7 +93,7 @@ class Update
   def code_review_rejected?
     has_approval?('Code-Review', '-1')
   end
-  
+
   def qa_approved?
     has_approval?('QA-Review', '1')
   end

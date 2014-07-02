@@ -88,7 +88,7 @@ class GerritNotifier
     if update.jenkins?
       if update.build_successful? && !update.wip?
         notify channels, "#{update.commit} *passed* Jenkins and is ready for *code review*"
-      elsif update.build_failed?
+      elsif update.build_failed? && !update.build_aborted?
         notify_user update.owner, "#{update.commit_without_owner} *failed* on Jenkins"
       end
     end
