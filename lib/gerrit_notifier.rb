@@ -112,9 +112,10 @@ class GerritNotifier
       notify channels, "#{update.author} has *Product-approved* #{update.commit}! :victory:"
     end
 
-    # Rejected by any reviewer
-    if update.code_review_rejected? || update.qa_rejected? || update.product_rejected?
-      notify channels, "#{update.author} has *rejected* #{update.commit}"
+    # Any minuses (Code/Product/QA)
+    if update.minus_1ed? || update.minus_2ed?
+      verb = update.minus_1ed? ? "-1'd" : "-2'd"
+      notify channels, "#{update.author} has *#{verb}* #{update.commit}"
     end
 
     # New comment added

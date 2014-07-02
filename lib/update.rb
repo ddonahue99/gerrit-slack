@@ -87,9 +87,9 @@ class Update
   end
 
   def code_review_rejected?
-    has_approval?('Code-Review', '-1') || has_approval?('Code-Review', '-2')
+    has_approval?('Code-Review', '-1')
   end
-
+  
   def qa_approved?
     has_approval?('QA-Review', '1')
   end
@@ -104,6 +104,14 @@ class Update
 
   def product_rejected?
     has_approval?('Product-Review', '-1')
+  end
+
+  def minus_1ed?
+    qa_rejected? || product_rejected? || code_review_rejected?
+  end
+
+  def minus_2ed?
+    has_approval?('Code-Review', '-2')
   end
 
   def has_approval?(type, value)

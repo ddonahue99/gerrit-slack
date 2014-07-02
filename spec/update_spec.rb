@@ -39,15 +39,19 @@ describe 'Update' do
 
   describe "code_review_rejected?" do
     it "is true when Code-Review -1 or -2" do
-      json = File.read('spec/fixtures/code-review-rejected.json')
+      json = File.read('spec/fixtures/code-review-rejected.json')  # -1
       update = Update.new(json)
       expect(update.code_review_rejected?).to be_true
+      expect(update.minus_1ed?).to be_true
+      expect(update.minus_2ed?).to be_false
     end
 
     it "is false when not Code-Review -1 or -2" do
       json = File.read('spec/fixtures/code-review-approved.json')
       update = Update.new(json)
       expect(update.code_review_rejected?).to be_false
+      expect(update.minus_1ed?).to be_false
+      expect(update.minus_2ed?).to be_false
     end
   end
 
