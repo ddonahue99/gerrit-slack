@@ -99,32 +99,32 @@ class GerritNotifier
 
     # Code review +2
     if update.code_review_approved?
-      notify channels, "#{update.author} has *+2'd* #{update.commit}: ready for *QA*"
+      notify channels, "#{update.author_slack_name} has *+2'd* #{update.commit}: ready for *QA*"
     end
 
     # Code review +1
     if update.code_review_tentatively_approved?
-      notify channels, "#{update.author} has *+1'd* #{update.commit}: needs another set of eyes for *code review*"
+      notify channels, "#{update.author_slack_name} has *+1'd* #{update.commit}: needs another set of eyes for *code review*"
     end
 
     # QA/Product
     if update.qa_approved? && update.product_approved?
-      notify channels, "#{update.author} has *QA/Product-approved* #{update.commit}! :mj: :victory:"
+      notify channels, "#{update.author_slack_name} has *QA/Product-approved* #{update.commit}! :mj: :victory:"
     elsif update.qa_approved?
-      notify channels, "#{update.author} has *QA-approved* #{update.commit}! :mj:"
+      notify channels, "#{update.author_slack_name} has *QA-approved* #{update.commit}! :mj:"
     elsif update.product_approved?
-      notify channels, "#{update.author} has *Product-approved* #{update.commit}! :victory:"
+      notify channels, "#{update.author_slack_name} has *Product-approved* #{update.commit}! :victory:"
     end
 
     # Any minuses (Code/Product/QA)
     if update.minus_1ed? || update.minus_2ed?
       verb = update.minus_1ed? ? "-1'd" : "-2'd"
-      notify channels, "#{update.author} has *#{verb}* #{update.commit}"
+      notify channels, "#{update.author_slack_name} has *#{verb}* #{update.commit}"
     end
 
     # New comment added
     if update.comment_added? && update.human? && update.comment != ''
-      notify channels, "#{update.author} has left comments on #{update.commit}: \"#{update.comment}\""
+      notify channels, "#{update.author_slack_name} has left comments on #{update.commit}: \"#{update.comment}\""
     end
 
     # Merged

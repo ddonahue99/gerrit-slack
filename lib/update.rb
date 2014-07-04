@@ -86,6 +86,10 @@ class Update
     json['author']['username']
   end
 
+  def author_slack_name
+    slack_name_for author
+  end
+
   def approvals
     json['approvals']
   end
