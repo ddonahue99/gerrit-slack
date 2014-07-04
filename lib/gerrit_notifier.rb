@@ -10,6 +10,10 @@ class GerritNotifier
     listen_for_updates
   end
 
+  def self.psa!(msg)
+    notify @@channel_config.keys, msg
+  end
+
   def self.notify(channels, msg)
     channels.each do |channel|
       channel = "##{channel}"
