@@ -59,11 +59,19 @@ class Update
   end
 
   def commit_without_owner
-    "<#{json['change']['url']}|[#{json['change']['project']}] #{subject}>"
+    "<#{json['change']['url']}|[#{json['change']['project']}] #{sanitized_subject}>"
   end
 
   def owner
     json['change']['owner']['username']
+  end
+
+  def sanitized_subject
+    sanitized = subject
+    sanitized.gsub!('<', '&lt;')
+    sanitized.gsub!('>', '&gt;')
+    sanitized.gsub!('&', '&amp;')
+    sanitized
   end
 
   def subject
