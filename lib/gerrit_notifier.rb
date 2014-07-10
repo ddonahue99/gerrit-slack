@@ -79,14 +79,11 @@ class GerritNotifier
   end
 
   def self.process_update(update)
-    ap update.json
-    puts update.raw_json
+    #ap update.json
+    #puts update.raw_json
 
     channels = update.channels(@@channel_config)
-    if channels.size == 0
-      puts "No subscribers, skipping."
-      return
-    end
+    return if channels.size == 0
 
     # Jenkins update
     if update.jenkins?
