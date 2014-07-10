@@ -3,6 +3,7 @@ class GerritNotifier
 
   @@buffer = {}
   @@channel_config = {}
+  @@semaphore = Mutex.new
 
   def self.start!
     @@channel_config = YAML.load(File.read('config/channels.yml'))
@@ -27,8 +28,10 @@ class GerritNotifier
   end
 
   def self.add_to_buffer(channel, msg)
-    @@buffer[channel] ||= []
-    @@buffer[channel] << msg
+    @@semaphore.synchronize do
+      @@buffer[channel] ||= []
+      @@buffer[channel] << msg
+    end
   end
 
   def self.start_buffer_daemon
@@ -38,27 +41,29 @@ class GerritNotifier
       slack_config = YAML.load(File.read('config/slack.yml'))['slack']
 
       while true
-        if @@buffer == {}
-          puts "[#{Time.now}] Buffer is empty"
-        else
-          puts "[#{Time.now}] Current buffer:"
-          ap @@buffer
-        end
-
-        if @@buffer.size > 0
-          @@buffer.each do |channel, messages|
-            notifier = Slack::Notifier.new slack_config['team'], slack_config['token']
-            notifier.ping(messages.join("\n\n"),
-              channel: channel,
-              username: 'gerrit',
-              icon_emoji: ':dragon_face:',
-              link_names: 1
-            )
+        @@semaphore.synchronize do
+          if @@buffer == {}
+            puts "[#{Time.now}] Buffer is empty"
+          else
+            puts "[#{Time.now}] Current buffer:"
+            ap @@buffer
           end
+
+          if @@buffer.size > 0
+            @@buffer.each do |channel, messages|
+              notifier = Slack::Notifier.new slack_config['team'], slack_config['token']
+              notifier.ping(messages.join("\n\n"),
+                channel: channel,
+                username: 'gerrit',
+                icon_emoji: ':dragon_face:',
+                link_names: 1
+              )
+            end
+          end
+
+          @@buffer = {}
         end
-
-        @@buffer = {}
-
+        
         sleep 15
       end
     end
