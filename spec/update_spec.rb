@@ -132,7 +132,8 @@ describe 'Update' do
       {
         "wip: it's a wip" => true,
         "wipe it clean" => false,
-        "WIP doin stuff" => true
+        "WIP doin stuff" => true,
+        "[wip] lol" => true
       }.each do |subject, expected|
         update.stub(:subject).and_return(subject)
         update.wip?.should == expected

@@ -79,7 +79,7 @@ class Update
   end
 
   def wip?
-    !!(subject.match /^wip[^a-zA-Z]+/i)
+    !!(subject.match /\bwip\b/i)
   end
 
   def author
