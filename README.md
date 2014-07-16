@@ -41,6 +41,11 @@ This is where the real fun happens. The structure is as follows:
 
 This configuration would post **all** updates from project1 to channel1, likewise for project2 and channel2. Updates to project3 are only posted to channel2 if the change owner is among those listed.
 
+For channels that hate fun, you can turn celebratory emojis off by setting emoji to false.
+
+    channel1:
+      emoji: false
+
 ### aliases.yml
 
 In order to ping a user on slack (e.g. for DMs on failed builds, or to @mention them), we need to know their Slack username. By default we assume the gerrit name is equal to the slack name. You can override this behavior on a per-user basis in aliases.yml.
