@@ -50,6 +50,12 @@ In order to ping a user on slack (e.g. for DMs on failed builds, or to @mention 
     bundle install
     bin/gerrit-slack
 
+## Development mode
+
+Run the integration with DEVELOPMENT set to true to see more debug output and to *not* actually send updates to Slack.
+
+    DEVELOPMENT=1 bin/gerrit-slack
+
 ## Running tests
 
     rspec

@@ -49,7 +49,7 @@ class GerritNotifier
             ap @@buffer
           end
 
-          if @@buffer.size > 0
+          if @@buffer.size > 0 && !ENV['DEVELOPMENT']
             @@buffer.each do |channel, messages|
               notifier = Slack::Notifier.new slack_config['team'], slack_config['token']
               notifier.ping(messages.join("\n\n"),
@@ -84,9 +84,11 @@ class GerritNotifier
   end
 
   def self.process_update(update)
-    #ap update.json
-    #puts update.raw_json
-
+    if ENV['DEVELOPMENT']
+      ap update.json
+      puts update.raw_json
+    end
+    
     channels = update.channels(@@channel_config)
     return if channels.size == 0
 
