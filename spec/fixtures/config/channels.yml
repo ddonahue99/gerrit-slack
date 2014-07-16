@@ -6,3 +6,7 @@ canvas:
     - canvas-lms
   owner:
     - panda
+no-emojis:
+  emoji: false
+  project: []
+  owner: []

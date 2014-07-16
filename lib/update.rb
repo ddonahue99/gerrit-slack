@@ -134,11 +134,4 @@ class Update
     approvals && \
       approvals.find { |approval| approval['type'] == type && approval['value'] == value }
   end
-
-  def channels(config)
-    config.select { |channel, opts|
-      opts['project'].include?("#{project}*") ||
-      (opts['project'].include?(project) && opts['owner'].include?(owner))
-    }.keys
-  end
 end

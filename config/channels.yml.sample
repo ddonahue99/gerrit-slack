@@ -8,5 +8,6 @@ channel-name:
     - owner-3
 
 channel-2-name:
+  emoji: false
   project:
     - project2*

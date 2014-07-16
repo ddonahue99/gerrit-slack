@@ -91,40 +91,6 @@ describe 'Update' do
     end
   end
 
-  describe "channels" do
-    let(:config) { YAML.load(File.read('spec/fixtures/config/channels.yml')) }
-    let(:update) { Update.new("{}") }
-
-    context "when the project has an asterisk" do
-      it "is always included no matter who the owner is" do
-        update.stub(:project).and_return('game-of-thrones')
-        update.stub(:owner).and_return('willsmith')
-        update.channels(config).should == ['hbo']
-      end
-    end
-
-    context "when the project does not have an asterisk" do
-      it "is included only if there is an owner match" do
-        update.stub(:project).and_return('canvas-lms')
-        update.stub(:owner).and_return('panda')
-        update.channels(config).should == ['canvas']
-      end
-
-      it "is not included on an owner mismatch" do
-        update.stub(:project).and_return('canvas-lms')
-        update.stub(:owner).and_return('notpanda')
-        update.channels(config).should == []
-      end
-    end
-
-    context "when the project is not listed" do
-      it "is not included" do
-        update.stub(:project).and_return('not-canvas')
-        update.channels(config).should == []
-      end
-    end
-  end
-
   describe "wip?" do
     let(:update) { Update.new("{}") }
 
