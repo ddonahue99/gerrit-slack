@@ -63,7 +63,11 @@ class Update
   end
 
   def owner
-    json['change']['owner']['username']
+    if json['change']
+      json['change']['owner']['username']
+    elsif json['submitter']
+      json['submitter']['username']
+    end
   end
 
   def sanitized_subject
