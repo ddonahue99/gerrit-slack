@@ -1,14 +1,11 @@
 class ChannelConfig
-  def initialize
-    @channels = Channel.all
-  end
 
   def all_channels
-    @channels
+    Channel.all
   end
 
   def channels_to_notify
-    @channels.select { |channel|
+    all_channels.select { |channel|
       channel.projects.include?("#{project}*") ||
       channel.projects.include?(project) && channel.owners.include?(owner)
     }
