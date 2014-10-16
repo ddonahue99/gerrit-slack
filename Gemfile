@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'devise'
+gem 'cancan'
 gem 'rubycas-client'
 gem 'rails_admin'
 gem 'slack-notifier'
