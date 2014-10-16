@@ -15,6 +15,15 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
+  config.model 'Alias' do
+    name do
+      label "Aliases"
+    end
+    list do
+      field :gerrit_username
+      field :slack_username
+    end
+  end
 
   config.actions do
     dashboard                     # mandatory

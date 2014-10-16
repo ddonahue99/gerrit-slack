@@ -11,13 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016021116) do
+ActiveRecord::Schema.define(version: 20141016184036) do
+
+  create_table "aliases", force: true do |t|
+    t.string   "gerrit_username"
+    t.string   "slack_username"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "channels", force: true do |t|
-    t.string   "owners"
-    t.string   "projects"
     t.string   "name"
-    t.boolean  "emoji_enabled"
+    t.string   "projects"
+    t.string   "owners"
+    t.boolean  "emoji_enabled",              default: true
+    t.text     "qa_product_approved_emojis"
+    t.text     "qa_approved_emojis"
+    t.text     "product_approved_emojis"
+    t.text     "merged_emojis"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -12,7 +12,8 @@ class ChannelConfig
   end
 
   def format_message(channel, msg, emoji)
-    if !emoji.empty? && channel.emoji_enabled
+    channel_config = Channel.find_by_name(channel)
+    if !emoji.empty? && channel_config.emoji_enabled
       "#{msg} #{emoji}"
     else
       msg

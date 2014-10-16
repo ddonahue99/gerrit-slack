@@ -90,6 +90,7 @@ class GerritNotifier
     end
 
     channels = @@channel_config.channels_to_notify(update.project, update.owner)
+    channel_object = Channel.find_by_name(channels)
 
     return if channels.size == 0
 
@@ -114,11 +115,11 @@ class GerritNotifier
 
     # QA/Product
     if update.qa_approved? && update.product_approved?
-      notify channels, "#{update.author_slack_name} has *QA/Product-approved* #{update.commit}!", ":mj: :victory:"
+      notify channels, "#{update.author_slack_name} has *QA/Product-approved* #{update.commit}!", channel_object.qa_product_approved_emojis
     elsif update.qa_approved?
-      notify channels, "#{update.author_slack_name} has *QA-approved* #{update.commit}!", ":mj:"
+      notify channels, "#{update.author_slack_name} has *QA-approved* #{update.commit}!", channel_object.qa_approved_emojis
     elsif update.product_approved?
-      notify channels, "#{update.author_slack_name} has *Product-approved* #{update.commit}!", ":victory:"
+      notify channels, "#{update.author_slack_name} has *Product-approved* #{update.commit}!", channel_object.product_approved_emojis
     end
 
     # Any minuses (Code/Product/QA)
@@ -134,7 +135,7 @@ class GerritNotifier
 
     # Merged
     if update.merged?
-      notify channels, "#{update.commit} was merged! \\o/", ":yuss: :dancing_cool:"
+      notify channels, "#{update.commit} was merged! \\o/", channels.merged_emojis
     end
   end
 end
