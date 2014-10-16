@@ -1,6 +1,6 @@
 class ChannelConfig
   def initialize
-    @channel = Channel.all
+    @channels = Channel.all
   end
 
   def all_channels
@@ -11,7 +11,7 @@ class ChannelConfig
     @channels.select { |channel|
       channel.projects.include?("#{project}*") ||
       channel.projects.include?(project) && channel.owners.include?(owner)
-    }.map(&:name)
+    }
   end
 
   def format_message(channel, msg, emoji)
