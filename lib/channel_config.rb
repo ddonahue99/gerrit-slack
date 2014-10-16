@@ -1,10 +1,10 @@
 class ChannelConfig
-  def initialize(input = 'config/channels.yml')
-    @config = YAML.load(File.read(input))
+  def initialize
+    @config = Channel.all
   end
 
   def all_channels
-    @config.keys
+    @config.map(&:name)
   end
 
   def channels_to_notify(project, owner)
