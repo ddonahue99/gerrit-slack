@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rubycas-client'
 gem 'rails_admin'
 gem 'slack-notifier'
 gem 'awesome_print'

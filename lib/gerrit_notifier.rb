@@ -1,5 +1,4 @@
 class GerritNotifier
-  # extend Alias
 
   @@buffer = {}
   @@channel_config = nil

@@ -1,5 +1,4 @@
 class Alias < ActiveRecord::Base
-    def self.slack_name_for
-
+    def self.slack_name_for(user)
     end
 end
