@@ -1,3 +1,5 @@
 class Alias < ActiveRecord::Base
-  belongs_to :channel
+    def self.slack_name_for
+
+    end
 end

@@ -1,5 +1,5 @@
 class Update
-  include Alias
+  # include Alias
 
   attr_reader :raw_json, :json
 
