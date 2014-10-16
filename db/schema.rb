@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20141016021116) do
     t.string   "owners"
     t.string   "projects"
     t.string   "name"
+    t.boolean  "emoji_enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

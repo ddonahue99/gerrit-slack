@@ -1,22 +1,21 @@
 class ChannelConfig
   def initialize
-    @config = Channel.all
+    @channel = Channel.all
   end
 
   def all_channels
-    @config.map(&:name)
+    @channels
   end
 
-  def channels_to_notify(project, owner)
-    @config.select { |channel, opts|
-      opts['project'].include?("#{project}*") ||
-      (opts['project'].include?(project) && opts['owner'].include?(owner))
-    }.keys
+  def channels_to_notify
+    @channels.select { |channel|
+      channel.projects.include?("#{project}*") ||
+      channel.projects.include?(project) && channel.owners.include?(owner)
+    }.map(&:name)
   end
 
   def format_message(channel, msg, emoji)
-    channel = @config[channel] || {}
-    if !emoji.empty? && channel.fetch('emoji', true)
+    if !emoji.empty? && channel.emoji_enabled
       "#{msg} #{emoji}"
     else
       msg

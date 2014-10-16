@@ -4,6 +4,7 @@ class CreateChannels < ActiveRecord::Migration
       t.string :owners
       t.string :projects
       t.string :name
+      t.boolean :emoji_enabled
 
       t.timestamps
     end
