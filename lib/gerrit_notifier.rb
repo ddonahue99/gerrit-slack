@@ -135,7 +135,7 @@ class GerritNotifier
 
     # Merged
     if update.merged?
-      notify channels, "#{update.commit} was merged! \\o/", channels.merged_emojis
+      notify channels, "#{update.commit} was merged! \\o/", channel_object.merged_emojis
     end
   end
 end
