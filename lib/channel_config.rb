@@ -4,11 +4,11 @@ class ChannelConfig
     Channel.all
   end
 
-  def channels_to_notify
+  def channels_to_notify(project, owner)
     all_channels.select { |channel|
       channel.projects.include?("#{project}*") ||
       channel.projects.include?(project) && channel.owners.include?(owner)
-    }
+    }.map(&:name)
   end
 
   def format_message(channel, msg, emoji)
