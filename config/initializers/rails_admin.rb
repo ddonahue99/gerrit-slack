@@ -32,3 +32,38 @@ RailsAdmin.config do |config|
     # history_show
   end
 end
+
+## CONFIG FOR CHANNEL
+RailsAdmin.config do |config|
+  config.model 'Channel' do
+    list do
+      field :name do
+        label "Name"
+      end
+      field :projects do
+        label "Projects"
+      end
+      field :owners do
+        label "Owners"
+      end
+      field :emoji_enabled do
+        label "Emojis"
+      end
+    end
+  end
+end
+
+## CONFIG FOR ALIAS
+RailsAdmin.config do |config|
+  config.model 'Alias' do
+    list do
+      field :gerrit_username
+      field :slack_username
+      end
+    end
+end
+
+## CONFIG FOR ADMIN
+RailsAdmin.config do |config|
+  config.excluded_models << Admin
+end
