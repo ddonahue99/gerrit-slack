@@ -50,6 +50,43 @@ RailsAdmin.config do |config|
         label "Emojis"
       end
     end
+    edit do
+      field :name do
+        required(true)
+        label "Name"
+        help "Insert Channel name, no # sign"
+      end
+      field :projects do
+        required(true)
+        label "Projects"
+        help "Separate projects by commas"
+      end
+      field :owners do
+        required(true)
+        label "Owners"
+        help "Separate owners by commas"
+      end
+      field :emoji_enabled do
+        required(true)
+        label "Emojis"
+      end
+      field :qa_approved_emojis do
+        label "QA approved emojis"
+        help "Type in emojis like :yuss: :pug:"
+      end
+      field :product_approved_emojis do
+        label "Product approved emojis"
+        help "Type in emojis like :yuss: :pug:"
+      end
+      field :qa_product_approved_emojis do
+        label "QA & Product approved emojis"
+        help "Type in emojis like :yuss: :pug:"
+      end
+      field :merged_emojis do
+        label "Merged emojis"
+        help "Type in emojis like :yuss: :pug:"
+      end
+    end
   end
 end
 
@@ -65,5 +102,15 @@ end
 
 ## CONFIG FOR ADMIN
 RailsAdmin.config do |config|
-  config.excluded_models << User
+  config.model 'User' do
+    list do
+      field :email
+    end
+    edit do
+      field :email
+      field :password
+      field :admin
+      field :superadmin
+    end
+  end
 end
