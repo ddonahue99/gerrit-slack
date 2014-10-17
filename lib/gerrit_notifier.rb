@@ -22,7 +22,7 @@ class GerritNotifier
   end
 
   def self.notify_user(user, msg)
-    channel = "@#{slack_name_for user}"
+    channel = "@#{Alias.slack_name_for user}"
     add_to_buffer channel, msg
   end
 
