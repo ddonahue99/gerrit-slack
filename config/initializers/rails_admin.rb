@@ -9,7 +9,8 @@ RailsAdmin.config do |config|
   config.current_user_method(&:current_user)
 
   ## == Cancan ==
-  # config.authorize_with :cancan
+  config.authorize_with :cancan
+  config.current_user_method &:current_user
 
   ## == PaperTrail ==
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
@@ -20,7 +21,6 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new
-    export
     bulk_delete
     show
     edit
@@ -61,4 +61,9 @@ RailsAdmin.config do |config|
       field :slack_username
       end
     end
+end
+
+## CONFIG FOR ADMIN
+RailsAdmin.config do |config|
+  config.excluded_models << User
 end
