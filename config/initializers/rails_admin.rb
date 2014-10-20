@@ -52,22 +52,20 @@ RailsAdmin.config do |config|
     end
     edit do
       field :name do
-        required(true)
-        label "Name"
-        help "Insert Channel name, no # sign"
+        required true
       end
       field :projects do
-        required(true)
+        required true
         label "Projects"
         help "Separate projects by commas"
       end
       field :owners do
-        required(true)
+        required true
         label "Owners"
         help "Separate owners by commas"
       end
       field :emoji_enabled do
-        required(true)
+        required true
         label "Emojis"
       end
       field :qa_approved_emojis do
