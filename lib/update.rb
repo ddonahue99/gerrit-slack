@@ -1,5 +1,4 @@
 class Update
-  include Alias
 
   attr_reader :raw_json, :json
 
@@ -55,7 +54,7 @@ class Update
   end
 
   def commit
-    "#{commit_without_owner} (by @#{slack_name_for owner})"
+    "#{commit_without_owner} (by @#{Alias.slack_name_for owner})"
   end
 
   def commit_without_owner
@@ -91,7 +90,7 @@ class Update
   end
 
   def author_slack_name
-    slack_name_for author
+    Alias.slack_name_for author
   end
 
   def approvals

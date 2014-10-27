@@ -1,22 +1,19 @@
 class ChannelConfig
-  def initialize(input = 'config/channels.yml')
-    @config = YAML.load(File.read(input))
-  end
 
   def all_channels
-    @config.keys
+    Channel.all
   end
 
   def channels_to_notify(project, owner)
-    @config.select { |channel, opts|
-      opts['project'].include?("#{project}*") ||
-      (opts['project'].include?(project) && opts['owner'].include?(owner))
-    }.keys
+    all_channels.select { |channel|
+      channel.projects.include?("#{project}*") ||
+      channel.projects.include?(project) && channel.owners.include?(owner)
+    }.map(&:name)
   end
 
   def format_message(channel, msg, emoji)
-    channel = @config[channel] || {}
-    if !emoji.empty? && channel.fetch('emoji', true)
+    channel_config = Channel.find_by_name(channel)
+    if !emoji.empty? && channel_config.emoji_enabled
       "#{msg} #{emoji}"
     else
       msg

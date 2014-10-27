@@ -1,1 +1,3 @@
+/tmp
 config/*.yml
+*.sqlite3
