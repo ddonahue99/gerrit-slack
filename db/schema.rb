@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141017181408) do
+ActiveRecord::Schema.define(version: 20150408150844) do
 
   create_table "aliases", force: true do |t|
     t.string   "gerrit_username"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20141017181408) do
     t.text     "merged_emojis"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "regexes"
   end
 
   create_table "users", force: true do |t|

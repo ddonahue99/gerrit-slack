@@ -81,6 +81,10 @@ class Update
     json['change']['subject']
   end
 
+  def regex_matches?(regex)
+    !!(subject.match /#{regex}/)
+  end
+
   def wip?
     !!(subject.match /\bwip\b/i)
   end
