@@ -1,66 +1,58 @@
-# Gerrit integration for Slack
+# Gerritbot UI
+Gerritbot UI uses Rails Admin for the UI, Devise for the authentication, and CanCan for the authorization. Rails Admin can be found here: [https://github.com/sferik/rails_admin]
+## RUNNING GERRITBOT
+You will have to run
+```ruby
+bundle exec rake run_notifier
+```
+from the root directory to enable the Gerrit listener in addition to running this app.
+---
+## RAILS_ADMIN
+There are three user "types": regular users, admin users, and superadmin users.
+### Users
+Can read and access the dashboard
+### Admins
+Admins can manage (read and write) Channel and Alias, but not destroy them. You can change this in app/model/ability.rb - look at the CanCan documentation for syntax
+### Superadmins
+Can manage everything. Because they are super.
+---
+## DATA INPUT
+The "Projects", "Owners", and "Regular Expression" fields are arrays. The emoji fields are text fields.
 
-## What is it?
+### ALIASES
+If someone has a different username for Slack and Gerrit, enter their respective usernames here.
 
-A daemon that sends updates to Slack channels as noteworthy events happen on Gerrit:
+### CHANNELS
+Enter the Channel name without the #, like this:
+```
+eng
+```
 
-  * Passing builds (except WIPs)
-  * Code/QA/Product reviews
-  * Comments
-  * Merges
-  * Failed builds (sent to owner via slackbot DM)
+### PROJECTS
+This field is a serialized array. Enter projects like this:
+```
+--- [project1*, project2]
+```
+The asterisk (*), posts **all updates** from the project to the channel. In the example above, any updates from the "project1 project" will post in the channel, but only the owners (below) will receive updates in the "project2 project".
 
-## Configuration
+### OWNERS
+This field is a serialized array. **Make sure you use their GERRIT username**. Enter owners like this:
+```
+--- [hannahbot, gerrituser]
+```
 
-Sample configuration files are provided in `config`.
+### REGULAR EXPRESSION
+This field is a serialized array. Gerritbot looks at the Gerrit subject, not the commit message, for your regular expression. You do not need to put `/` around your regular expression.
 
-### slack.yml
+```
+[[a|A]11[y|Y], urgent]
+```
+The above will match
+`urgent a11y commit`, `my awesome a11y stuff`, and `urgent ticket` - be careful of putting in whole words!
 
-Configure your team name and Incoming Webhook integration token here.
-
-### gerrit.yml
-
-Set the SSH command used to monitor stream-events on gerrit.
-
-### channels.yml
-
-This is where the real fun happens. The structure is as follows:
-
-    channel1:
-      project:
-        - project1*
-
-    channel2:
-      project:
-        - project2*
-        - project3
-      owner:
-        - owner1
-        - owner2
-        - owner3
-
-This configuration would post **all** updates from project1 to channel1, likewise for project2 and channel2. Updates to project3 are only posted to channel2 if the change owner is among those listed.
-
-For channels that hate fun, you can turn celebratory emojis off by setting emoji to false.
-
-    channel1:
-      emoji: false
-
-### aliases.yml
-
-In order to ping a user on slack (e.g. for DMs on failed builds, or to @mention them), we need to know their Slack username. By default we assume the gerrit name is equal to the slack name. You can override this behavior on a per-user basis in aliases.yml.
-
-## Running the daemon
-
-    bundle install
-    bin/gerrit-slack
-
-## Development mode
-
-Run the integration with DEVELOPMENT set to true to see more debug output and to *not* actually send updates to Slack.
-
-    DEVELOPMENT=1 bin/gerrit-slack
-
-## Running tests
-
-    rspec
+### EMOJIS
+Emojis are text fields. Enter in emojis like this:
+```
+:tada: :crystal_ball:
+```
+Currently, the emoji fields don't hide if the checkbox is not checked, but the emoji fields are optional. If you leave them blank, it won't hurt Gerritbot.
