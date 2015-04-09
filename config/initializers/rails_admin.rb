@@ -43,6 +43,9 @@ RailsAdmin.config do |config|
       field :projects do
         label "Projects"
       end
+      field :regexes do
+        label "Regular Expression"
+      end
       field :owners do
         label "Owners"
       end
@@ -58,6 +61,11 @@ RailsAdmin.config do |config|
         required true
         label "Projects"
         help "Separate projects by commas"
+      end
+      field :regexes do
+        required true
+        label "Regular Expression"
+        help "Separate regular expression by commas"
       end
       field :owners do
         required true

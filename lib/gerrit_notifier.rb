@@ -88,7 +88,7 @@ class GerritNotifier
       puts update.raw_json
     end
 
-    channels = @@channel_config.channels_to_notify(update.project, update.owner)
+    channels = @@channel_config.channels_to_notify(update)
     channel_object = Channel.find_by_name(channels)
 
     return if channels.size == 0

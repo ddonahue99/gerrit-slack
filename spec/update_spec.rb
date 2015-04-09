@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Update' do
+RSpec.describe Update do
   describe 'initialize' do
     it 'parses the passed in JSON' do
       json = File.read('spec/fixtures/comment-added.json')
@@ -9,17 +9,25 @@ describe 'Update' do
     end
   end
 
+  describe "matches regex?" do
+    it "returns true for regex" do
+      json = File.read('spec/fixtures/code-review-approved.json')
+      update = Update.new(json)
+      expect(update.regex_matches?(/test/)).to be_truthy
+    end
+  end
+
   describe "code_review_approved?" do
     it "returns true when +2 Code-Review" do
       json = File.read('spec/fixtures/code-review-approved.json')
       update = Update.new(json)
-      expect(update.code_review_approved?).to be_true
+      expect(update.code_review_approved?).to be_truthy
     end
 
     it "returns false when not +2 Code-Review" do
       json = File.read('spec/fixtures/code-review-tentatively-approved.json')
       update = Update.new(json)
-      expect(update.code_review_approved?).to be_false
+      expect(update.code_review_approved?).to be_falsey
     end
   end
 
@@ -27,13 +35,13 @@ describe 'Update' do
     it "returns true when +1 Code-Review" do
       json = File.read('spec/fixtures/code-review-tentatively-approved.json')
       update = Update.new(json)
-      expect(update.code_review_tentatively_approved?).to be_true
+      expect(update.code_review_tentatively_approved?).to be_truthy
     end
 
     it "returns false when not +1 Code-Review" do
       json = File.read('spec/fixtures/code-review-approved.json')
       update = Update.new(json)
-      expect(update.code_review_tentatively_approved?).to be_false
+      expect(update.code_review_tentatively_approved?).to be_falsey
     end
   end
 
@@ -41,17 +49,17 @@ describe 'Update' do
     it "is true when Code-Review -1 or -2" do
       json = File.read('spec/fixtures/code-review-rejected.json')  # -1
       update = Update.new(json)
-      expect(update.code_review_rejected?).to be_true
-      expect(update.minus_1ed?).to be_true
-      expect(update.minus_2ed?).to be_false
+      expect(update.code_review_rejected?).to be_truthy
+      expect(update.minus_1ed?).to be_truthy
+      expect(update.minus_2ed?).to be_falsey
     end
 
     it "is false when not Code-Review -1 or -2" do
       json = File.read('spec/fixtures/code-review-approved.json')
       update = Update.new(json)
-      expect(update.code_review_rejected?).to be_false
-      expect(update.minus_1ed?).to be_false
-      expect(update.minus_2ed?).to be_false
+      expect(update.code_review_rejected?).to be_falsey
+      expect(update.minus_1ed?).to be_falsey
+      expect(update.minus_2ed?).to be_falsey
     end
   end
 
@@ -59,13 +67,13 @@ describe 'Update' do
     it "is true when type is change-merged" do
       json = File.read('spec/fixtures/merged.json')
       update = Update.new(json)
-      expect(update.merged?).to be_true
+      expect(update.merged?).to be_truthy
     end
 
     it "is false when type is not change-merged" do
       json = File.read('spec/fixtures/comment-added.json')
       update = Update.new(json)
-      expect(update.merged?).to be_false
+      expect(update.merged?).to be_falsey
     end
   end
 
@@ -73,13 +81,13 @@ describe 'Update' do
     it "is true when comment contains ABORTED" do
       json = File.read('spec/fixtures/jenkins-aborted.json')
       update = Update.new(json)
-      expect(update.build_aborted?).to be_true
+      expect(update.build_aborted?).to be_truthy
     end
 
     it "is false when not aborted" do
       json = File.read('spec/fixtures/comment-added.json')
       update = Update.new(json)
-      expect(update.build_aborted?).to be_false      
+      expect(update.build_aborted?).to be_falsey
     end
   end
 
