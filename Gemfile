@@ -33,7 +33,6 @@ gem 'spring',        group: :development
 group :test do
   gem 'rspec'
   gem 'rspec-rails', '~> 3.0'
-  gem 'pry-byebug'
   gem 'pry'
   gem 'dotenv-rails'
 end

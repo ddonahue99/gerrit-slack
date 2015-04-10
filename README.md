@@ -42,13 +42,13 @@ This field is a serialized array. **Make sure you use their GERRIT username**. E
 ```
 
 ### REGULAR EXPRESSION
-This field is a serialized array. Gerritbot looks at the Gerrit subject, not the commit message, for your regular expression. You do not need to put `/` around your regular expression.
+This field is a serialized array. Gerritbot looks at the Gerrit subject, not the commit message, for your regular expression. *Gerritbot uses `.match` and assumes that the user will put in the correct regex*. You do not need to put `/` around your regular expression, but wrap your regular expression in parentheses to escape them.
 
 ```
-[[a|A]11[y|Y], urgent]
+[([a|A]11[y|Y]), urgent]
 ```
 The above will match
-`urgent a11y commit`, `my awesome a11y stuff`, and `urgent ticket` - be careful of putting in whole words!
+`urgent a11y commit`, `my awesome a11y stuff`, and `urgent ticket` - be careful of putting in whole words! Notice how the first regular expression is wrapped in parentheses!
 
 ### EMOJIS
 Emojis are text fields. Enter in emojis like this:
@@ -56,3 +56,13 @@ Emojis are text fields. Enter in emojis like this:
 :tada: :crystal_ball:
 ```
 Currently, the emoji fields don't hide if the checkbox is not checked, but the emoji fields are optional. If you leave them blank, it won't hurt Gerritbot.
+
+### NOTES
+If you have an asterisk'd project and a regular expression listed, it will only look for the regular expression inside the project. For example:
+
+`--- [project1*]`
+
+`--- ["test"]`
+
+
+The above will only return commits with "test" in the subject, inside project1. If you want to get all the updates from a project (asterisk'd project) and find all the commits with the regular expression, you will need to make two channel listings. Gerritbot will double post if the project is the same.
