@@ -114,7 +114,7 @@ RailsAdmin.config do |config|
     end
     edit do
       field :email
-      field :password
+      field :username
       field :admin
       field :superadmin
     end
