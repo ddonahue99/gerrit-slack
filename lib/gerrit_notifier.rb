@@ -73,9 +73,11 @@ class GerritNotifier
     stream = YAML.load(File.read('config/gerrit.yml'))['gerrit']['stream']
     puts "Listening to stream via #{stream}"
 
-    IO.popen(stream).each do |line|
-      update = Update.new(line)
-      process_update(update)
+    IO.popen(stream) do |p|
+      p.each do |line|
+        update = Update.new(line)
+        process_update(update)
+      end
     end
 
     puts "Connection to Gerrit server failed, trying to reconnect."
