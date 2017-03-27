@@ -55,7 +55,7 @@ class GerritNotifier
               notifier.ping(messages.join("\n\n"),
                 channel: channel,
                 username: 'gerrit',
-                icon_emoji: ':dragon_face:',
+                icon_emoji: ':gerrit:',
                 link_names: 1
               )
             end
@@ -93,6 +93,11 @@ class GerritNotifier
 
     return if channels.size == 0
 
+    # New patchset
+    if update.new_patchset? && !update.wip?
+      notify channels, "@here, a new patchset has been created: #{update.commit}. Needs *code review*"
+    end
+
     # Jenkins update
     if update.jenkins?
       if update.build_successful? && !update.wip?
@@ -104,12 +109,12 @@ class GerritNotifier
 
     # Code review +2
     if update.code_review_approved?
-      notify channels, "#{update.author_slack_name} has *+2'd* #{update.commit}: ready for *QA*"
+      notify channels, "#{update.author_slack_name} has *+2'd* #{update.commit}: the patch is ready to be *submitted*"
     end
 
     # Code review +1
     if update.code_review_tentatively_approved?
-      notify channels, "#{update.author_slack_name} has *+1'd* #{update.commit}: needs another set of eyes for *code review*"
+      notify channels, "#{update.author_slack_name} has *+1'd* #{update.commit}"
     end
 
     # QA/Product
@@ -124,7 +129,7 @@ class GerritNotifier
     # Any minuses (Code/Product/QA)
     if update.minus_1ed? || update.minus_2ed?
       verb = update.minus_1ed? ? "-1'd" : "-2'd"
-      notify channels, "#{update.author_slack_name} has *#{verb}* #{update.commit}"
+      notify channels, "#{update.author_slack_name} has *#{verb}* #{update.commit}", ":slowclap:"
     end
 
     # New comment added
@@ -134,7 +139,7 @@ class GerritNotifier
 
     # Merged
     if update.merged?
-      notify channels, "#{update.commit} was merged! \\o/", ":yuss: :dancing_cool:"
+      notify channels, "#{update.commit} the patch was merged! \\o/", ":tada: :aw_yeah:"
     end
   end
 end
