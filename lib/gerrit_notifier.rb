@@ -139,7 +139,13 @@ class GerritNotifier
 
     # Merged
     if update.merged?
-      notify channels, "#{update.commit} the patch was merged! \\o/", ":tada: :aw_yeah:"
+      notify channels, "#{update.commit} the patch was merged!", ":tada: :aw_yeah:"
     end
+
+    # Patch abandoned
+    if update.abandoned?
+      notify channels, "The following patchset has been abandoned: #{update.commit}."
+    end
+
   end
 end

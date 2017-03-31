@@ -28,6 +28,10 @@ class Update
     type == 'change-merged'
   end
 
+  def abandoned?
+    type == 'change-abandoned'
+  end
+
   def human?
     !['hudson', 'firework'].include?(json['author']['username'])
   end
