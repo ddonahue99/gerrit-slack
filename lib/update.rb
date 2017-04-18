@@ -16,12 +16,20 @@ class Update
     json['change']['project'] if json['change']
   end
 
+  def new_patchset?
+    type == 'patchset-created'
+  end
+
   def comment_added?
     type == 'comment-added'
   end
 
   def merged?
     type == 'change-merged'
+  end
+
+  def abandoned?
+    type == 'change-abandoned'
   end
 
   def human?
